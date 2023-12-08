@@ -26,9 +26,9 @@ const GraphView = () => {
   const [heartRate, setHeartRate] = useState(0); // Initialize with 0
   const [heartRateThreshold, setHeartRateThreshold] = useState(""); // Default threshold for running
   const [activity, setActivity] = useState("Resting");
-  // const [heartRateData, setHeartRateData] = useState(null);
+  // const [heartRateValue, setHeartRateValue] = useState(null);
   const [refresh, setRefresh] = useState(0);
-  const { heartRateData, loading, setLoading } = useContext(HeartRateContext);
+  const { heartRateValue, setHeartRateValue, loading, setLoading,} = useContext(HeartRateContext);
 
   var deviceWidth = Dimensions.get("window").width;
 
@@ -37,18 +37,21 @@ const GraphView = () => {
   };
 
   useEffect(() => {
-    // Fetch the last value from heartRateData when it changes
+    // Fetch the last value from heartRateValue when it changes
     if (
       !loading &&
-      heartRateData &&
-      heartRateData.results[0] &&
-      heartRateData.results[0].length > 0
+      heartRateValue &&
+      heartRateValue.results[0] &&
+      heartRateValue.results[0].length > 0
     ) {
-      const rawData = heartRateData.results[0];
+      const rawData = heartRateValue.results[0];
       const lastValue = rawData[rawData.length - 1][0];
       setHeartRate(lastValue);
     }
-  }, [heartRateData, loading]);
+  }, [heartRateValue, loading]);
+
+  console.log("HeartRate ", heartRateValue)
+
 
   // useEffect(( ()) =>{},[refreshKey])
 
@@ -78,9 +81,11 @@ const GraphView = () => {
     }
   }, [activity]);
 
-  // useEffect(() =>{
-  //   setHeartRateData(heartRate)
-  // },(heartRateData))
+  
+  useEffect(() =>{
+    setHeartRateValue(heartRate)
+  },(heartRateValue))
+
 
   const compareHeartRate = () => {
     if (activity === "Hard Aerobics" && heartRate > heartRateThreshold) {
@@ -127,13 +132,14 @@ const GraphView = () => {
         </View>
         <View className="mt-[-30] mb-2">
           <View style={{ flexDirection: "row" }}>
-            <TextInput
+            <Text>HR: {heartRate.toString()}</Text>
+            {/* <TextInput
               style={{ flex: 1, marginRight: 8 }}
               placeholder="Enter Heart Rate"
               keyboardType="numeric"
               value={heartRate.toString()}
               onChangeText={(text) => setHeartRate(parseInt(text) || 0)}
-            />
+            /> */}
           </View>
         </View>
 

@@ -29,7 +29,7 @@ const Graph = () => {
     value: result[y],
   }));
 
-  console.log(data)
+  // console.log(data)
   
 
   // const x = chartData.columns[0].indexOf("timestamp");
